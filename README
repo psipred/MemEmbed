@@ -6,6 +6,25 @@ Paper
 
 For full details, see http://www.biomedcentral.com/1471-2105/14/276/
 
+Ansible installation
+--------------------
+
+First ensure that ansible is installed on your system, then clone the github
+repo
+
+% pip install ansible
+% git clone https://github.com/psipred/MemEmbed.git
+% cd MemEmbed/ansible_installer
+
+Next edit the the config_vars.yml to reflect where you would like MemEmbed
+
+You can now run ansible as per
+
+% ansible-playbook -i hosts install.yml
+
+You can edit the hosts file to install Memebed on one or more machines.
+
+
 Compiling
 ---------
 
