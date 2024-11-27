@@ -1,0 +1,49 @@
+  # - name: Download boost 1.49
+  #   when: boost_exist.stat.exists == False
+  #   get_url:
+  #     url: https://master.dl.sourceforge.net/project/boost/boost/1.49.0/boost_1_49_0.tar.gz?viasf=1
+  #     dest: "{{ app_location }}/"
+  #     timeout: 120
+  #   register: get_url_result
+
+  # - name: untar boost 1.49
+  #   when: boost_exist.stat.exists == False
+  #   unarchive:
+  #     src: "{{ app_location }}/boost_1_49_0.tar.gz"
+  #     dest: "{{ app_location }}"
+  #     remote_src: yes
+
+  # - name: configure boost
+  #   when: boost_exist.stat.exists == False
+  #   shell: "cd {{ app_location }}/boost_1_49_0/; ./configure"
+
+  # - name: make boost
+  #   when: boost_exist.stat.exists == False
+  #   shell: "cd {{ app_location }}/boost_1_49_0/; make"
+
+  # - name: install boost
+  #   when: boost_exist.stat.exists == False
+  #   shell: "cd {{ app_location }}/boost_1_49_0/; make install"
+
+  - name: Install boost
+    dnf:
+      pkg: boost boost-devel
+      state: latest
+    become_user: root
+    become_method: sudo
+
+  - name: Check memembed is present
+    stat: path={{ app_location }}/memembed
+    register: memembed_exist
+
+  - name : Check out memembed from GIT
+    when: memembed_exist.stat.exists == False
+    git:
+      repo: https://github.com/psipred/memembed.git
+      dest: "{{ app_location }}/memembed"
+      clone: yes
+      force: yes
+
+  - name: make and install memembed
+    shell: "cd {{ app_location }}/memembed; make"
+    when: memembed_exist.stat.exists == False

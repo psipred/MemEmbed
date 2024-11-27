@@ -1,0 +1,6 @@
+- name: Install memembed
+  hosts: all
+  roles:
+    - memembed
+  vars_files:
+   - ./config_vars.yml
